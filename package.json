@@ -9,6 +9,8 @@
   "author": "Rohit Pawar",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.3",
+    "mssql": "^10.0.2",
     "url": "^0.11.3"
   }
 }
