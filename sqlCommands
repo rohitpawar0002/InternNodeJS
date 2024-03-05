@@ -1,0 +1,34 @@
+USE [Intern]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_AngularAddEmp]    Script Date: 3/4/2024 5:27:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ALTER procedure [dbo].[pro_AngularAddEmp]
+
+@mode bigint=null,
+@name nvarchar(max)=null,
+@Email nvarchar(max)=null,
+@Mobile_no nvarchar(max)=null,
+@Password nvarchar(max)=null,
+@ConfirmPassword nvarchar(max)=null
+
+
+as
+begin
+
+if(@mode=1) -- Fetch data from country table and display in dropdown
+begin
+
+select * from AngularEmpRegister
+
+select 'Success' as message
+
+--insert into AngularEmpRegister(Name,Mobile,	Email,Password,Confirm_Password,OpTime)
+--values(@name,@Mobile_no,@Email,@Password,@ConfirmPassword,GETDATE());
+
+end
+end
