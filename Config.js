@@ -1,12 +1,12 @@
-var sqlConfig = {
+var config = {
+    server:'localhost',
+    database: 'Intern',
     user: 'sa',
     password: '12345',
-    database: 'Intern',
-    server:'localhost',
     options:{
         encrypt:false,
         trustedConnection:true
     }
   };
 
-  module.exports=sqlConfig;
+  module.exports=config;

@@ -1,22 +1,38 @@
 const express=require('express');
-var app=express();
-var sql=require('mssql');
-const sqlConfig=require('./Model/AddEmployeeModel');
+const app = express();
+const bodyParser = require("body-parser");
 
-app.get('/',function(req,res){
-    sql.connect(sqlConfig,function(err){
-        if(err)console.log(err);
 
-        var request=new sql.Request();
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 
-        request.query('select * from AngularEmpRegister',function(err,recordset){
-            if(err)console.log(err);
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-            res.send(recordset);
-            console.log(recordset);
-        });
-    });
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
 });
+
+
+
+const routs = require("./routes/loginControllers");
+
+//const FetchEmployee = require("./api/routes/AddEmployeeRouts");
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use("/api/getLoginCre", routs);
+
 
 app.listen(8080,function(){
     console.log('Server is running on 8080....');
