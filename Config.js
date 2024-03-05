@@ -1,12 +1,12 @@
 var config = {
-    server:'localhost',
-    database: 'Intern',
+    server: 'localhost',
+    database: 'Intern2',
     user: 'sa',
     password: '12345',
-    options:{
-        encrypt:false,
-        trustedConnection:true
+    "options": {
+        "encrypt": true,
+        "enableArithAbort": true
     }
-  };
+};
 
-  module.exports=config;
+module.exports = config;

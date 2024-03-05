@@ -1,0 +1,55 @@
+select * from AddEmpCountry;
+select * from AddEmpState;
+select * from AddEmpCity;
+
+--Insert into country table	
+insert into AddEmpCountry (CountryName)
+values ('India');
+insert into AddEmpCountry (CountryName)
+values ('USA');
+insert into AddEmpCountry (CountryName)
+values ('Philippines');
+
+--insert into state table
+
+insert into AddEmpState (FK_Country,StateName)
+values (1 ,'Maharashtra'),(1 ,'Karnatak'),(1 ,'Tamil Nadu'),
+(2,'Newyork'),(2,'Washington'),(2,'Shikago'),
+(3,'laguna'),(3,'Bukidnon')
+
+--insert into city table
+
+insert into AddEmpCity (FK_State,CityName)
+values (1,'Mumbai'),(1,'Pune'),(1,'Nashik'),
+(2,'Bangalore'),(2,'Davanagere'),(2,'Mysore'),
+(3,'Chennai'),(3,'Rajapalayam'),(3,'Madurai'),(3,'Hosur'),
+(4,'Norwich'),(4,'White Plains'),
+(5,'Camas'),
+(6,' Cicero'),
+(7,'Santa Rosa City'),(8,'Pila'),
+(8,'Sumilao'),(8,'Valencia')
+
+
+update  AddEmpState set StateName='Chicago' where PK_state=6;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

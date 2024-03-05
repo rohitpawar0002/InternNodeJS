@@ -1,17 +1,15 @@
 const sql = require('mssql');
-const config = require("../Config");
 
 
-async function loginfunction(emailid, password, mode) {
- 
+const loginfunction = async function (emailID, password, mode) {
+
     try {
-        await sql.connect(config);
         var request = new sql.Request();
-        request.input('Email', sql.VarChar(500), emailid);
+        request.input('Email', sql.VarChar(500), emailID);
         request.input('Password', sql.VarChar(500), password);
         request.input('mode', sql.Int, mode);
-       
-        const result = await request.execute('pro_AngularAddEmp');
+
+        const result = await request.execute('pro_AngularEmp');
         console.log(result);
         return result;
     } catch (error) {
@@ -19,4 +17,5 @@ async function loginfunction(emailid, password, mode) {
         throw error; // Rethrow the error to handle it at the caller level
     }
 }
-module.exports = loginfunction;
+
+module.exports = { loginfunction };

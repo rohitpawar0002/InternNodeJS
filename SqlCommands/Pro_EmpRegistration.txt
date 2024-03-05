@@ -1,0 +1,78 @@
+USE [Intern2]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_EmpRegistration]    Script Date: 05-03-2024 08:14:41 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER procedure [dbo].[pro_EmpRegistration]
+
+@mode bigint=null,
+@EmpName nvarchar(max)=null,
+@Email nvarchar(max)=null,
+@Mobile_no nvarchar(max)=null,
+@Password nvarchar(max)=null,
+@CurrentEmail nvarchar(max)=null,
+@FK_EmpId bigint=null
+as
+begin
+
+if(@mode=1) -- check data and Insert data in empregistratio
+begin
+	if exists(select 1 from LoginMaster where Email=@Email) -- Entry alredy exists,handle accordingly
+	begin
+		select '1' as message
+	end
+	else if exists(select 1 from EmpRegistration where Mobile_no=@Mobile_no)
+	begin 
+		select '2' as message
+	end
+	else --Entry dosen't exist, proceed with the insert statement
+	begin
+	insert into EmpRegistration (EmpName,Email,Mobile_no,Password,OpTime)
+	values (@EmpName,@Email,@Mobile_no,@Password,GETDATE());
+
+	declare @id bigint=SCOPE_IDENTITY();
+	insert into LoginMaster (Fk_Emp_Id,Email,Password,OpTime)
+	values (@id,@Email,@Password,GETDATE());
+
+	select 'success' as message
+end
+end
+
+if(@mode=2) -- Login
+
+begin 
+ if exists(select 1 from LoginMaster where Email=@Email and Password=@Password)
+ begin 
+ select '1' as userexists
+ end
+ -- else
+--begin
+--	select '0' as notexists
+--end
+end
+-- if(@mode=3) -- check registrtion 
+--begin
+end
+
+if(@mode=3) -- Updated form 
+begin 
+	set @FK_EmpId=(select Fk_Emp_Id from LoginMaster where Email=@CurrentEmail)
+
+update LoginMaster set Email=@Email, Password=@Password,OpTime=GETDATE() where Fk_Emp_Id=@FK_EmpId;
+update EmpRegistration set EmpName=@EmpName, Email=@Email,Mobile_no=@Mobile_no, Password=@Password,OpTime=GETDATE() where PK_EmpId=@FK_EmpId;
+
+select 'Updated' as message
+end
+
+if(@mode=4) 
+begin 
+	set @FK_EmpId=(select Fk_Emp_Id from LoginMaster where Email=@CurrentEmail)
+
+	delete from LoginMaster where Fk_Emp_Id=@FK_EmpId;
+    delete from EmpRegistration where PK_EmpId=@FK_EmpId;
+
+	select 'Deleted' as message
+end	

@@ -1,0 +1,89 @@
+USE [Intern2]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_AddEmp]    Script Date: 05-03-2024 08:12:11 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER procedure [dbo].[pro_AddEmp]
+
+@mode bigint=null,
+@name nvarchar(max)=null,
+@EmpRole nvarchar(max)=null,
+@EmpID nvarchar(max)=null,
+@gender nvarchar(10)=null,
+@DOB date=null,
+@age bigint=null,	
+@blood nvarchar(max)=null,
+@Email nvarchar(max)=null,
+@Mobile_no nvarchar(max)=null,
+@Password nvarchar(max)=null,
+@CAaddress nvarchar(max)=null,
+@PAaddress nvarchar(max)=null,
+@country nvarchar(50)=null,
+@state nvarchar(50)=null,
+@city nvarchar(50)=null,
+@addharno nvarchar(20)=null,
+@image image=null,
+@CurrentEmail nvarchar(max)=null,
+@FK_EmpId bigint=null,
+@tempCID bigint=null,
+@tempSID bigint=null
+
+as
+begin
+
+if(@mode=1) -- Fetch data from country table and display in dropdown
+begin
+
+
+
+insert into AddEmpMain (EmpName,EmpRole,EmpId,Gender,Birth_Date,Age,Blood_Group,Email,Mobile,Password,Current_Address,Permanent_Address	,Country,State,	City,Addhar_Number,Image,OpTime)
+values(@name,@EmpRole,@EmpID,@gender,@DOB,@age,@blood,@Email,@Mobile_no,@Password,@CAaddress,@PAaddress,@country,@state,@city,@addharno,@image,GETDATE());
+
+
+      select '1' as message
+
+end
+
+
+if(@mode=2)
+begin 
+	select PK_Country,CountryName from AddEmpCountry;
+end
+if(@mode=3)
+begin
+ 	if(@tempCID>0)
+	begin
+	  select PK_State,StateName from AddEmpState where FK_Country=@tempCID;
+	end
+	begin
+		select PK_State,StateName from AddEmpState;
+	end
+end
+if(@mode=4)
+begin
+		if(@tempSID>0)
+		begin  
+
+		select PK_City,CityName from AddEmpCity where FK_State=@tempSID;
+
+		end
+
+		begin 
+		select PK_City,CityName from AddEmpCity
+			
+		end
+	end
+end
+
+if(@mode=5)
+begin
+
+	select * from AddEmpMain
+
+end
+	
+
+	select * from AddEmpMain

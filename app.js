@@ -1,9 +1,12 @@
-const express=require('express');
+const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
+const sql = require('mssql');
+const config = require("./Config");
+const routs = require("./routes/auth.router");
 
 
-app.use(function (req, res, next) {
+app.use(async function (_req, res, next) {
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 
@@ -17,23 +20,29 @@ app.use(function (req, res, next) {
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+    // init sql connection
+    await sql.connect(config);
+
     // Pass to next layer of middleware
     next();
 });
 
 
-
-const routs = require("./routes/loginControllers");
-
 //const FetchEmployee = require("./api/routes/AddEmployeeRouts");
 
-
+// parse requestr body to `json format`
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/getLoginCre", routs);
 
+// global error handler
+function errorHandler(error, _req, res, _next) {
+    res.status(500).send(error.message);
+}
 
-app.listen(8080,function(){
+app.use(errorHandler)
+
+app.listen(8080, function () {
     console.log('Server is running on 8080....');
 });

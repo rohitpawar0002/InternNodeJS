@@ -1,0 +1,35 @@
+USE [Intern2]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_AngularEmp]    Script Date: 05-03-2024 08:13:39 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER procedure [dbo].[pro_AngularEmp]
+
+@mode bigint=null,
+@name nvarchar(max)=null,
+@Email nvarchar(max)=null,
+@Mobile_no nvarchar(max)=null,
+@Password nvarchar(max)=null,
+@ConfirmPassword nvarchar(max)=null,
+@FK_EmpId bigint=null
+as
+begin
+
+if(@mode=1) -- check data and Insert data in empregistratio
+begin
+	
+	--insert into AngularEmpRegister (Name,Email,Mobile_no,Password,Confirm_Password,OpTime)
+	--values (@name,@Email,@Mobile_no,@Password,@ConfirmPassword,GETDATE());
+
+	--declare @id bigint=SCOPE_IDENTITY();
+	--insert into AngularEmpLogin (FK_Register_Id,Email,Password,OpTime)
+	--values (@id,@Email,@Password,GETDATE());
+
+select * from AngularEmpRegister
+
+select 'Success' as message
+end
+end
