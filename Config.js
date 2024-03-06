@@ -1,11 +1,12 @@
 var config = {
     server: 'localhost',
-    database: 'Intern2',
+    database: 'Intern',
     user: 'sa',
     password: '12345',
-    "options": {
-        "encrypt": true,
-        "enableArithAbort": true
+    options: {
+        encrypt: false,
+        enableArithAbort: true,
+        trustedConnection:true
     }
 };
 

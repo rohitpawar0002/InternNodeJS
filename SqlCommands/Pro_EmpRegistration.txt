@@ -1,15 +1,16 @@
-USE [Intern2]
+USE [Intern]
 GO
-/****** Object:  StoredProcedure [dbo].[pro_EmpRegistration]    Script Date: 05-03-2024 08:14:41 AM ******/
+/****** Object:  StoredProcedure [dbo].[pro_AngularRegister]    Script Date: 3/5/2024 6:57:10 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER procedure [dbo].[pro_EmpRegistration]
+
+ALTER procedure [dbo].[pro_AngularRegister]
 
 @mode bigint=null,
-@EmpName nvarchar(max)=null,
+@name nvarchar(max)=null,
 @Email nvarchar(max)=null,
 @Mobile_no nvarchar(max)=null,
 @Password nvarchar(max)=null,
@@ -20,38 +21,40 @@ begin
 
 if(@mode=1) -- check data and Insert data in empregistratio
 begin
-	if exists(select 1 from LoginMaster where Email=@Email) -- Entry alredy exists,handle accordingly
+if exists(select 1 from AngularEmpLogin where Email=@Email) -- Entry alredy exists,handle accordingly
 	begin
 		select '1' as message
 	end
-	else if exists(select 1 from EmpRegistration where Mobile_no=@Mobile_no)
+	else if exists(select 1 from AngularEmpRegister where Mobile=@Mobile_no)
 	begin 
 		select '2' as message
 	end
 	else --Entry dosen't exist, proceed with the insert statement
 	begin
-	insert into EmpRegistration (EmpName,Email,Mobile_no,Password,OpTime)
-	values (@EmpName,@Email,@Mobile_no,@Password,GETDATE());
+	
+	insert into AngularEmpRegister (Name,Email,Mobile,Password,OpTime)
+	values (@name,@Email,@Mobile_no,@Password,GETDATE());
 
 	declare @id bigint=SCOPE_IDENTITY();
-	insert into LoginMaster (Fk_Emp_Id,Email,Password,OpTime)
+	insert into AngularEmpLogin (FK_Register_Id,Email,Password,OpTime)
 	values (@id,@Email,@Password,GETDATE());
 
-	select 'success' as message
+
+select 'Success' as message
 end
 end
 
 if(@mode=2) -- Login
 
 begin 
- if exists(select 1 from LoginMaster where Email=@Email and Password=@Password)
+ if exists(select 1 from AngularEmpLogin where Email=@Email and Password=@Password)  --Change AngularEmpLogin
  begin 
  select '1' as userexists
  end
- -- else
---begin
---	select '0' as notexists
---end
+  else
+begin
+	select '0' as notexists
+end
 end
 -- if(@mode=3) -- check registrtion 
 --begin
@@ -59,20 +62,21 @@ end
 
 if(@mode=3) -- Updated form 
 begin 
-	set @FK_EmpId=(select Fk_Emp_Id from LoginMaster where Email=@CurrentEmail)
+	set @FK_EmpId=(select FK_Register_Id from AngularEmpLogin where Email=@CurrentEmail)
 
-update LoginMaster set Email=@Email, Password=@Password,OpTime=GETDATE() where Fk_Emp_Id=@FK_EmpId;
-update EmpRegistration set EmpName=@EmpName, Email=@Email,Mobile_no=@Mobile_no, Password=@Password,OpTime=GETDATE() where PK_EmpId=@FK_EmpId;
+update AngularEmpLogin set Email=@Email, Password=@Password,OpTime=GETDATE() where FK_Register_Id=@FK_EmpId;
+update AngularEmpRegister set Name=@name, Email=@Email,Mobile=@Mobile_no, Password=@Password,OpTime=GETDATE() where PK_Register_Id=@FK_EmpId;
 
 select 'Updated' as message
 end
 
 if(@mode=4) 
 begin 
-	set @FK_EmpId=(select Fk_Emp_Id from LoginMaster where Email=@CurrentEmail)
+	set @FK_EmpId=(select FK_Register_Id from AngularEmpLogin where Email=@CurrentEmail)
 
-	delete from LoginMaster where Fk_Emp_Id=@FK_EmpId;
-    delete from EmpRegistration where PK_EmpId=@FK_EmpId;
+	delete from AngularEmpLogin where FK_Register_Id=@FK_EmpId;
+    delete from AngularEmpRegister where PK_Register_Id=@FK_EmpId;
 
 	select 'Deleted' as message
 end	
+

@@ -1,6 +1,6 @@
-USE [Intern2]
+USE [Intern]
 GO
-/****** Object:  StoredProcedure [dbo].[pro_AddEmp]    Script Date: 05-03-2024 08:12:11 AM ******/
+/****** Object:  StoredProcedure [dbo].[pro_AddEmp]    Script Date: 3/5/2024 6:53:16 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,12 +78,3 @@ begin
 	end
 end
 
-if(@mode=5)
-begin
-
-	select * from AddEmpMain
-
-end
-	
-
-	select * from AddEmpMain

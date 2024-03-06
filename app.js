@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const sql = require('mssql');
 const config = require("./Config");
 const routs = require("./routes/auth.router");
+const cors = require("cors");
+
 
 
 app.use(async function (_req, res, next) {
@@ -21,7 +23,7 @@ app.use(async function (_req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     // init sql connection
-    await sql.connect(config);
+    
 
     // Pass to next layer of middleware
     next();
@@ -34,8 +36,11 @@ app.use(async function (_req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/api/getLoginCre", routs);
+app.use("/api/getLoginCre",cors(), routs);
 
+app.use("/api/getRegisterCre",cors(),routs);
+
+app.use("api/postAddEmp",cors(),routs);
 // global error handler
 function errorHandler(error, _req, res, _next) {
     res.status(500).send(error.message);
