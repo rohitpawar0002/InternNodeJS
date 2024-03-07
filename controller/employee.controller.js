@@ -13,17 +13,17 @@ const addEmp = async function (req, res, next) {
         let userExist = await employeeModel.addemployee(bodyobj, 1)
         let sqlMessage = userExist.recordsets[0]
         // if (sqlMessage[0].message == "Success")
-        if (sqlMessage[0].message == "Success") {
+        if (sqlMessage[0].message == "1") {
             res.status(200).json({
                 "Success": true,
                 "Message": "Successful",
                 "Data": userExist.recordsets[0]
             });
-        } else if (sqlMessage[0].message == "1") {
-
+        } else{
             return res.status(200).send({
                 "Success": false,
-                "Message": "Already Exists",
+                
+                "Message": "Can not inserted ",
                 "Data": []
             });
         }

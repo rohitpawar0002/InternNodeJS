@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const config = require('../Config')
 
-const addemployee = async function (objBody, mode) {
+const   addemployee = async function (objBody, mode) {
 
     try {
         await sql.connect(config);
@@ -9,7 +9,6 @@ const addemployee = async function (objBody, mode) {
         request.input('name', sql.VarChar(500), objBody.name);
         request.input('EmpRole', sql.VarChar(500), objBody.role);
         request.input('EmpID', sql.VarChar(500), objBody.empId);
-        request.input('EmpID', sql.VarChar(500), objBody.emprole);
         request.input('gender', sql.VarChar(500), objBody.gender);
         request.input('DOB', sql.VarChar(500), objBody.date);
         request.input('age', sql.VarChar(500), objBody.age.toString());
@@ -21,8 +20,8 @@ const addemployee = async function (objBody, mode) {
         request.input('PAaddress', sql.VarChar(500), objBody.PermanentAddress);
         request.input('country', sql.VarChar(500), objBody.country);
         request.input('state', sql.VarChar(500), objBody.state);
-        request.input('city ', sql.VarChar(500), objBody.city );
-        request.input('addharno', sql.VarChar(500), objBody.AddharNumber);
+        request.input('city', sql.VarChar(500), objBody.city);
+        request.input('addharno', sql.VarChar(500), objBody.AddharNumber.toString());
         request.input('mode', sql.Int, mode);
 
         const result = await request.execute('pro_AddEmp');
@@ -38,7 +37,7 @@ const getEmployee = async function () {
     try {
         await sql.connect(config);
         var request = new sql.Request();
-        const result = await request.query("select * from AddEmpMain");
+        const result = await request.query("select * from AngularAddEmp");
         return result.recordset
     } catch (error) {
         throw error
