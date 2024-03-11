@@ -46,5 +46,17 @@ const getEmployee = async function (req, res, next) {
     }
 }
 
+const deleteEmployee = async function (req, res, next) {
+    try {
+         await employeeModel.deleteEmployee()
+        res.status(200).send({
+            "Success":true
+         })
+    }
+    catch (err) {
+        console.log(err);
+        next(err)
+    }
+}
 
-module.exports = { addEmp, getEmployee }
+module.exports = { addEmp,getEmployee,deleteEmployee}

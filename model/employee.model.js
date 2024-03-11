@@ -37,11 +37,22 @@ const getEmployee = async function () {
     try {
         await sql.connect(config);
         var request = new sql.Request();
-        const result = await request.query("select * from AngularAddEmp");
+        const result = await request.query("select * from AddEmpMain");
         return result.recordset
     } catch (error) {
         throw error
     }
 }
 
-module.exports = { addemployee, getEmployee };
+const deleteEmployee = async function () {
+    try {
+        await sql.connect(config);
+        var request = new sql.Request();
+        const result = await request.query("delete from AddEmpMain where PK_EmpId=id");
+        return result.recordset
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { addemployee, getEmployee,deleteEmployee };

@@ -40,6 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/api/auth",cors(), authRouts);
 app.use("/api/employee",cors(), employeeRoute);
 
+
 // global error handler
 function errorHandler(error, _req, res, _next) {
     res.status(500).send(error.message);
