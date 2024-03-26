@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const sql = require('mssql');
 const config = require("./Config");
 const authRouts = require("./routes/auth.router");
-const employeeRoute = require("./routes/employee.router")
+const employeeRoute = require("./routes/employee.router");
 const cors = require("cors");
 
 
