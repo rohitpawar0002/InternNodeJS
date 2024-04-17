@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const config = require('../Config')
 
-const   addemployee = async function (objBody, mode) {
+const addemployee = async function (objBody, mode) {
 
     try {
         await sql.connect(config);
@@ -44,6 +44,17 @@ const getEmployee = async function () {
     }
 }
 
+const getEmployeeByID = async function (employeeID) {
+    try {
+        await sql.connect(config);
+        var request = new sql.Request();
+        const result = await request.query("select * from AddEmpMain where PK_EmpId = $1", [employeeID]);
+        return result.recordset[0];
+    } catch (error) {
+        throw error
+    }
+}
+
 const deleteEmployee = async function () {
     try {
         await sql.connect(config);
@@ -55,4 +66,32 @@ const deleteEmployee = async function () {
     }
 }
 
-module.exports = { addemployee, getEmployee,deleteEmployee };
+const updateEmployeeById = async function (employeeID, payload) {
+    try {
+        const s = await sql.connect(config);
+        var request = new sql.Request();
+
+        // get keys from payload
+        const keys = Object.keys(payload);
+        let updateString = '';
+
+        // looping for get string in format of update query like 'key = value'
+        for (let i = 0; i < keys.length; i++) {
+            // if key is not first then add ','
+            if (i != 0) {
+                updateString = updateString + ",";
+            }
+
+            let string = `${keys[i]} = ${payload[keys[i]]}`;
+            updateString = updateString + string;
+        }
+
+        const result = await request.query("UPDATE AddEmpMain SET $1 WHERE PK_EmpId = $2", [updateString, employeeID]);
+        await s.close()
+        return result.recordset
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { addemployee, getEmployee, deleteEmployee, getEmployeeByID, updateEmployeeById };

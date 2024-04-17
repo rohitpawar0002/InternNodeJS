@@ -19,10 +19,10 @@ const addEmp = async function (req, res, next) {
                 "Message": "Successful",
                 "Data": userExist.recordsets[0]
             });
-        } else{
+        } else {
             return res.status(200).send({
                 "Success": false,
-                
+
                 "Message": "Can not inserted ",
                 "Data": []
             });
@@ -48,10 +48,10 @@ const getEmployee = async function (req, res, next) {
 
 const deleteEmployee = async function (req, res, next) {
     try {
-         await employeeModel.deleteEmployee()
+        await employeeModel.deleteEmployee()
         res.status(200).send({
-            "Success":true
-         })
+            "Success": true
+        })
     }
     catch (err) {
         console.log(err);
@@ -59,4 +59,35 @@ const deleteEmployee = async function (req, res, next) {
     }
 }
 
-module.exports = { addEmp,getEmployee,deleteEmployee}
+const getEmployeeByID = async function (req, res, next) {
+    try {
+        const { employeeID } = req.params;
+        const employee = await employeeModel.getEmployeeByID(employeeID)
+        res.status(200).send({
+            "Success": true,
+            data: employee
+        })
+    }
+    catch (err) {
+        console.log(err);
+        next(err)
+    }
+}
+
+const updateEmployeeByID = async function (req, res, next) {
+    try {
+        const { employeeID } = req.params;
+        const payload = req.body;
+
+        await employeeModel.updateEmployeeById(employeeID, payload)
+        res.status(200).send({
+            "Success": true
+        })
+    }
+    catch (err) {
+        console.log(err);
+        next(err)
+    }
+}
+
+module.exports = { addEmp, getEmployee, deleteEmployee, getEmployeeByID, updateEmployeeByID }
